@@ -1,11 +1,39 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/database');
 
-const adjustmentSchema = new mongoose.Schema({
-  product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
-  quantity: { type: Number, required: true },
-  reason: { type: String, enum: ['damage', 'loss', 'expired', 'other'], required: true },
-  date: { type: Date, default: Date.now },
-  type: { type: String, enum: ['add', 'remove'], default: 'remove' }, // for future, if adding stock
-}, { timestamps: true });
+const Adjustment = sequelize.define('Adjustment', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  productId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'products',
+      key: 'id'
+    }
+  },
+  quantity: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: false
+  },
+  reason: {
+    type: DataTypes.ENUM('damage', 'loss', 'expired', 'other'),
+    allowNull: false
+  },
+  date: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW
+  },
+  type: {
+    type: DataTypes.ENUM('add', 'remove'),
+    defaultValue: 'remove'
+  }
+}, {
+  timestamps: true,
+  tableName: 'adjustments'
+});
 
-module.exports = mongoose.model('Adjustment', adjustmentSchema);
+module.exports = Adjustment;

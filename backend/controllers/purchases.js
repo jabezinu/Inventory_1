@@ -1,9 +1,15 @@
 const Purchase = require('../models/Purchase');
 const Product = require('../models/Product');
+const Supplier = require('../models/Supplier');
 
 exports.getAllPurchases = async (req, res) => {
   try {
-    const purchases = await Purchase.find().populate('product supplier');
+    const purchases = await Purchase.findAll({
+      include: [
+        { model: Product, as: 'product' },
+        { model: Supplier, as: 'supplier' }
+      ]
+    });
     res.json(purchases);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -12,7 +18,12 @@ exports.getAllPurchases = async (req, res) => {
 
 exports.getPurchaseById = async (req, res) => {
   try {
-    const purchase = await Purchase.findById(req.params.id).populate('product supplier');
+    const purchase = await Purchase.findByPk(req.params.id, {
+      include: [
+        { model: Product, as: 'product' },
+        { model: Supplier, as: 'supplier' }
+      ]
+    });
     if (!purchase) return res.status(404).json({ error: 'Purchase not found' });
     res.json(purchase);
   } catch (err) {
@@ -22,19 +33,23 @@ exports.getPurchaseById = async (req, res) => {
 
 exports.createPurchase = async (req, res) => {
   try {
-    const { product, quantity, costPrice } = req.body;
-    const prod = await Product.findById(product);
+    const { productId, quantity, costPrice } = req.body;
+    const prod = await Product.findByPk(productId);
     if (!prod) return res.status(404).json({ error: 'Product not found' });
 
     // Update product stock and average cost
-    const newTotalCost = (prod.averageCost * prod.stockQuantity) + (costPrice * quantity);
-    const newTotalQuantity = prod.stockQuantity + quantity;
+    const currentStock = parseFloat(prod.stockQuantity);
+    const currentAvgCost = parseFloat(prod.averageCost);
+    const newQuantity = parseFloat(quantity);
+    const newCostPrice = parseFloat(costPrice);
+    
+    const newTotalCost = (currentAvgCost * currentStock) + (newCostPrice * newQuantity);
+    const newTotalQuantity = currentStock + newQuantity;
     prod.averageCost = newTotalCost / newTotalQuantity;
     prod.stockQuantity = newTotalQuantity;
     await prod.save();
 
-    const purchase = new Purchase(req.body);
-    await purchase.save();
+    const purchase = await Purchase.create(req.body);
     res.status(201).json(purchase);
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -43,8 +58,9 @@ exports.createPurchase = async (req, res) => {
 
 exports.updatePurchase = async (req, res) => {
   try {
-    const purchase = await Purchase.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const purchase = await Purchase.findByPk(req.params.id);
     if (!purchase) return res.status(404).json({ error: 'Purchase not found' });
+    await purchase.update(req.body);
     res.json(purchase);
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -53,9 +69,9 @@ exports.updatePurchase = async (req, res) => {
 
 exports.deletePurchase = async (req, res) => {
   try {
-    const purchase = await Purchase.findByIdAndDelete(req.params.id);
+    const purchase = await Purchase.findByPk(req.params.id);
     if (!purchase) return res.status(404).json({ error: 'Purchase not found' });
-    // Optionally, reverse the stock update, but for simplicity, not doing it here
+    await purchase.destroy();
     res.json({ message: 'Purchase deleted' });
   } catch (err) {
     res.status(500).json({ error: err.message });

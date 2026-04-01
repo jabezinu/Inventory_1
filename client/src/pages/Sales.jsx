@@ -44,7 +44,12 @@ const Sales = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await createSale(formData);
+            // Remove customer field if it's empty
+            const saleData = { ...formData };
+            if (!saleData.customer) {
+                delete saleData.customer;
+            }
+            await createSale(saleData);
             setIsModalOpen(false);
             resetForm();
             fetchData();

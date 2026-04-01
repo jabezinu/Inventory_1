@@ -1,12 +1,47 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/database');
 
-const productSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
-  supplier: { type: mongoose.Schema.Types.ObjectId, ref: 'Supplier' },
-  stockQuantity: { type: Number, default: 0 },
-  averageCost: { type: Number, default: 0 },
-  lowStockThreshold: { type: Number, default: 10 },
-}, { timestamps: true });
+const Product = sequelize.define('Product', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  categoryId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'categories',
+      key: 'id'
+    }
+  },
+  supplierId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'suppliers',
+      key: 'id'
+    }
+  },
+  stockQuantity: {
+    type: DataTypes.DECIMAL(10, 2),
+    defaultValue: 0
+  },
+  averageCost: {
+    type: DataTypes.DECIMAL(10, 2),
+    defaultValue: 0
+  },
+  lowStockThreshold: {
+    type: DataTypes.DECIMAL(10, 2),
+    defaultValue: 10
+  }
+}, {
+  timestamps: true,
+  tableName: 'products'
+});
 
-module.exports = mongoose.model('Product', productSchema);
+module.exports = Product;

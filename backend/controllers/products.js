@@ -1,8 +1,17 @@
 const Product = require('../models/Product');
+const Category = require('../models/Category');
+const Supplier = require('../models/Supplier');
+const { Op } = require('sequelize');
+const sequelize = require('../config/database');
 
 exports.getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find().populate('category supplier');
+    const products = await Product.findAll({
+      include: [
+        { model: Category, as: 'category' },
+        { model: Supplier, as: 'supplier' }
+      ]
+    });
     res.json(products);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -11,7 +20,12 @@ exports.getAllProducts = async (req, res) => {
 
 exports.getProductById = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id).populate('category supplier');
+    const product = await Product.findByPk(req.params.id, {
+      include: [
+        { model: Category, as: 'category' },
+        { model: Supplier, as: 'supplier' }
+      ]
+    });
     if (!product) return res.status(404).json({ error: 'Product not found' });
     res.json(product);
   } catch (err) {
@@ -21,8 +35,7 @@ exports.getProductById = async (req, res) => {
 
 exports.createProduct = async (req, res) => {
   try {
-    const product = new Product(req.body);
-    await product.save();
+    const product = await Product.create(req.body);
     res.status(201).json(product);
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -31,8 +44,9 @@ exports.createProduct = async (req, res) => {
 
 exports.updateProduct = async (req, res) => {
   try {
-    const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const product = await Product.findByPk(req.params.id);
     if (!product) return res.status(404).json({ error: 'Product not found' });
+    await product.update(req.body);
     res.json(product);
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -41,8 +55,9 @@ exports.updateProduct = async (req, res) => {
 
 exports.deleteProduct = async (req, res) => {
   try {
-    const product = await Product.findByIdAndDelete(req.params.id);
+    const product = await Product.findByPk(req.params.id);
     if (!product) return res.status(404).json({ error: 'Product not found' });
+    await product.destroy();
     res.json({ message: 'Product deleted' });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -51,9 +66,18 @@ exports.deleteProduct = async (req, res) => {
 
 exports.getLowStockProducts = async (req, res) => {
   try {
-    const products = await Product.find().populate('category supplier');
-    const lowStock = products.filter(p => p.stockQuantity <= p.lowStockThreshold);
-    res.json(lowStock);
+    const products = await Product.findAll({
+      where: sequelize.where(
+        sequelize.col('stockQuantity'),
+        Op.lte,
+        sequelize.col('lowStockThreshold')
+      ),
+      include: [
+        { model: Category, as: 'category' },
+        { model: Supplier, as: 'supplier' }
+      ]
+    });
+    res.json(products);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

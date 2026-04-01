@@ -1,9 +1,28 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/database');
 
-const supplierSchema = new mongoose.Schema({
-  name: { type: String, required: true, unique: true },
-  contact: { type: String },
-  address: { type: String },
-}, { timestamps: true });
+const Supplier = sequelize.define('Supplier', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true
+  },
+  contact: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  address: {
+    type: DataTypes.TEXT,
+    allowNull: true
+  }
+}, {
+  timestamps: true,
+  tableName: 'suppliers'
+});
 
-module.exports = mongoose.model('Supplier', supplierSchema);
+module.exports = Supplier;

@@ -1,11 +1,43 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/database');
 
-const purchaseSchema = new mongoose.Schema({
-  product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
-  quantity: { type: Number, required: true },
-  costPrice: { type: Number, required: true },
-  date: { type: Date, default: Date.now },
-  supplier: { type: mongoose.Schema.Types.ObjectId, ref: 'Supplier' },
-}, { timestamps: true });
+const Purchase = sequelize.define('Purchase', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  productId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'products',
+      key: 'id'
+    }
+  },
+  quantity: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: false
+  },
+  costPrice: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: false
+  },
+  date: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW
+  },
+  supplierId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'suppliers',
+      key: 'id'
+    }
+  }
+}, {
+  timestamps: true,
+  tableName: 'purchases'
+});
 
-module.exports = mongoose.model('Purchase', purchaseSchema);
+module.exports = Purchase;
