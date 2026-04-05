@@ -38,16 +38,16 @@ const Reports = () => {
             // Transform data for charts
             setSalesData(sales.map(s => ({
                 date: s.period,
-                revenue: s.totalRevenue,
-                quantity: s.totalQuantity,
-                profit: s.totalProfit
+                revenue: parseFloat(s.totalRevenue || 0),
+                quantity: parseFloat(s.totalQuantity || 0),
+                profit: parseFloat(s.totalProfit || 0)
             })));
 
             setStockData(stock);
 
             setProfitData(profit.map(p => ({
                 date: p.period,
-                profit: p.totalProfit
+                profit: parseFloat(p.totalProfit || 0)
             })));
 
         } catch (error) {

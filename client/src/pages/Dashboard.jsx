@@ -46,11 +46,11 @@ const Dashboard = () => {
                 ]);
 
                 // Calculate total revenue from sales report
-                const totalRevenue = salesReport.reduce((acc, curr) => acc + curr.totalRevenue, 0);
+                const totalRevenue = salesReport.reduce((acc, curr) => acc + parseFloat(curr.totalRevenue || 0), 0);
 
                 setStats({
                     totalRevenue,
-                    totalProfit: profitData.totalProfit,
+                    totalProfit: parseFloat(profitData.totalProfit || 0),
                     totalProducts: products.length,
                     lowStockCount: lowStock.length,
                 });
@@ -58,8 +58,8 @@ const Dashboard = () => {
                 // Format sales data for chart
                 setSalesData(salesReport.map(item => ({
                     date: item.period,
-                    revenue: item.totalRevenue,
-                    profit: item.totalProfit
+                    revenue: parseFloat(item.totalRevenue || 0),
+                    profit: parseFloat(item.totalProfit || 0)
                 })));
 
             } catch (error) {
