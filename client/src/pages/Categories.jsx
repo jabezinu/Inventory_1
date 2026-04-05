@@ -38,7 +38,7 @@ const Categories = () => {
         e.preventDefault();
         try {
             if (currentCategory) {
-                await updateCategory(currentCategory._id, formData);
+                await updateCategory(currentCategory.id, formData);
             } else {
                 await createCategory(formData);
             }
@@ -122,7 +122,7 @@ const Categories = () => {
                         </thead>
                         <tbody>
                             {filteredCategories.map(category => (
-                                <tr key={category._id} className="border-b hover:bg-gray-50">
+                                <tr key={category.id} className="border-b hover:bg-gray-50">
                                     <td className="p-4 font-medium">{category.name}</td>
                                     <td className="p-4 text-gray-500">{category.description || '-'}</td>
                                     <td className="p-4 text-gray-500">{new Date(category.createdAt).toLocaleDateString()}</td>
@@ -134,7 +134,7 @@ const Categories = () => {
                                             <Edit size={18} />
                                         </button>
                                         <button
-                                            onClick={() => handleDelete(category._id)}
+                                            onClick={() => handleDelete(category.id)}
                                             className="text-red-600 hover:text-red-800"
                                         >
                                             <Trash2 size={18} />

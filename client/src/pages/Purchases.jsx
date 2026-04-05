@@ -13,10 +13,10 @@ const Purchases = () => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [formData, setFormData] = useState({
-        product: '',
+        productId: '',
         quantity: 1,
         costPrice: 0,
-        supplier: ''
+        supplierId: ''
     });
 
     useEffect(() => {
@@ -55,10 +55,10 @@ const Purchases = () => {
 
     const resetForm = () => {
         setFormData({
-            product: '',
+            productId: '',
             quantity: 1,
             costPrice: 0,
-            supplier: ''
+            supplierId: ''
         });
     };
 
@@ -108,7 +108,7 @@ const Purchases = () => {
                         </thead>
                         <tbody>
                             {filteredPurchases.map(purchase => (
-                                <tr key={purchase._id} className="border-b hover:bg-gray-50">
+                                <tr key={purchase.id} className="border-b hover:bg-gray-50">
                                     <td className="p-4">{new Date(purchase.date).toLocaleDateString()}</td>
                                     <td className="p-4">{purchase.product?.name || 'Unknown Product'}</td>
                                     <td className="p-4">{purchase.supplier?.name || 'Unknown Supplier'}</td>
@@ -132,13 +132,13 @@ const Purchases = () => {
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Product</label>
                                 <select
                                     className="w-full p-2 border rounded-lg"
-                                    value={formData.product}
-                                    onChange={e => setFormData({ ...formData, product: e.target.value })}
+                                    value={formData.productId}
+                                    onChange={e => setFormData({ ...formData, productId: e.target.value })}
                                     required
                                 >
                                     <option value="">Select Product</option>
                                     {products.map(p => (
-                                        <option key={p._id} value={p._id}>
+                                        <option key={p.id} value={p.id}>
                                             {p.name} (Current Stock: {p.stockQuantity})
                                         </option>
                                     ))}
@@ -149,13 +149,13 @@ const Purchases = () => {
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Supplier</label>
                                 <select
                                     className="w-full p-2 border rounded-lg"
-                                    value={formData.supplier}
-                                    onChange={e => setFormData({ ...formData, supplier: e.target.value })}
+                                    value={formData.supplierId}
+                                    onChange={e => setFormData({ ...formData, supplierId: e.target.value })}
                                     required
                                 >
                                     <option value="">Select Supplier</option>
                                     {suppliers.map(s => (
-                                        <option key={s._id} value={s._id}>{s.name}</option>
+                                        <option key={s.id} value={s.id}>{s.name}</option>
                                     ))}
                                 </select>
                             </div>

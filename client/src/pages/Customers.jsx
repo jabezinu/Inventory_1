@@ -39,7 +39,7 @@ const Customers = () => {
         e.preventDefault();
         try {
             if (currentCustomer) {
-                await updateCustomer(currentCustomer._id, formData);
+                await updateCustomer(currentCustomer.id, formData);
             } else {
                 await createCustomer(formData);
             }
@@ -125,7 +125,7 @@ const Customers = () => {
                         </thead>
                         <tbody>
                             {filteredCustomers.map(customer => (
-                                <tr key={customer._id} className="border-b hover:bg-gray-50">
+                                <tr key={customer.id} className="border-b hover:bg-gray-50">
                                     <td className="p-4 font-medium">{customer.name}</td>
                                     <td className="p-4">{customer.contact || '-'}</td>
                                     <td className="p-4">{customer.address || '-'}</td>
@@ -137,7 +137,7 @@ const Customers = () => {
                                             <Edit size={18} />
                                         </button>
                                         <button
-                                            onClick={() => handleDelete(customer._id)}
+                                            onClick={() => handleDelete(customer.id)}
                                             className="text-red-600 hover:text-red-800"
                                         >
                                             <Trash2 size={18} />

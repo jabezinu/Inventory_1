@@ -39,7 +39,7 @@ const Suppliers = () => {
         e.preventDefault();
         try {
             if (currentSupplier) {
-                await updateSupplier(currentSupplier._id, formData);
+                await updateSupplier(currentSupplier.id, formData);
             } else {
                 await createSupplier(formData);
             }
@@ -125,7 +125,7 @@ const Suppliers = () => {
                         </thead>
                         <tbody>
                             {filteredSuppliers.map(supplier => (
-                                <tr key={supplier._id} className="border-b hover:bg-gray-50">
+                                <tr key={supplier.id} className="border-b hover:bg-gray-50">
                                     <td className="p-4 font-medium">{supplier.name}</td>
                                     <td className="p-4">{supplier.contact || '-'}</td>
                                     <td className="p-4">{supplier.address || '-'}</td>
@@ -137,7 +137,7 @@ const Suppliers = () => {
                                             <Edit size={18} />
                                         </button>
                                         <button
-                                            onClick={() => handleDelete(supplier._id)}
+                                            onClick={() => handleDelete(supplier.id)}
                                             className="text-red-600 hover:text-red-800"
                                         >
                                             <Trash2 size={18} />

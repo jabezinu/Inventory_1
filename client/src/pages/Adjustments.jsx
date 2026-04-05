@@ -11,7 +11,7 @@ const Adjustments = () => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [formData, setFormData] = useState({
-        product: '',
+        productId: '',
         quantity: 1,
         reason: '',
         type: 'remove'
@@ -51,7 +51,7 @@ const Adjustments = () => {
 
     const resetForm = () => {
         setFormData({
-            product: '',
+            productId: '',
             quantity: 1,
             reason: '',
             type: 'remove'
@@ -103,7 +103,7 @@ const Adjustments = () => {
                         </thead>
                         <tbody>
                             {filteredAdjustments.map(adj => (
-                                <tr key={adj._id} className="border-b hover:bg-gray-50">
+                                <tr key={adj.id} className="border-b hover:bg-gray-50">
                                     <td className="p-4">{new Date(adj.date).toLocaleDateString()}</td>
                                     <td className="p-4">{adj.product?.name || 'Unknown Product'}</td>
                                     <td className="p-4">
@@ -131,13 +131,13 @@ const Adjustments = () => {
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Product</label>
                                 <select
                                     className="w-full p-2 border rounded-lg"
-                                    value={formData.product}
-                                    onChange={e => setFormData({ ...formData, product: e.target.value })}
+                                    value={formData.productId}
+                                    onChange={e => setFormData({ ...formData, productId: e.target.value })}
                                     required
                                 >
                                     <option value="">Select Product</option>
                                     {products.map(p => (
-                                        <option key={p._id} value={p._id}>
+                                        <option key={p.id} value={p.id}>
                                             {p.name} (Current: {p.stockQuantity})
                                         </option>
                                     ))}

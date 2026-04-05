@@ -27,8 +27,8 @@ const Products = () => {
     const [currentProduct, setCurrentProduct] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
-        category: '',
-        supplier: '',
+        categoryId: '',
+        supplierId: '',
         stockQuantity: 0,
         averageCost: 0,
         lowStockThreshold: 10
@@ -59,7 +59,7 @@ const Products = () => {
         e.preventDefault();
         try {
             if (currentProduct) {
-                await updateProduct(currentProduct._id, formData);
+                await updateProduct(currentProduct.id, formData);
             } else {
                 await createProduct(formData);
             }
@@ -86,8 +86,8 @@ const Products = () => {
         setCurrentProduct(product);
         setFormData({
             name: product.name,
-            category: product.category?._id || '',
-            supplier: product.supplier?._id || '',
+            categoryId: product.category?.id || '',
+            supplierId: product.supplier?.id || '',
             stockQuantity: product.stockQuantity,
             averageCost: product.averageCost,
             lowStockThreshold: product.lowStockThreshold
@@ -99,8 +99,8 @@ const Products = () => {
         setCurrentProduct(null);
         setFormData({
             name: '',
-            category: '',
-            supplier: '',
+            categoryId: '',
+            supplierId: '',
             stockQuantity: 0,
             averageCost: 0,
             lowStockThreshold: 10
@@ -152,7 +152,7 @@ const Products = () => {
                         </thead>
                         <tbody>
                             {filteredProducts.map(product => (
-                                <tr key={product._id} className="border-b hover:bg-gray-50">
+                                <tr key={product.id} className="border-b hover:bg-gray-50">
                                     <td className="p-4">{product.name}</td>
                                     <td className="p-4">{product.category?.name || '-'}</td>
                                     <td className="p-4">{product.supplier?.name || '-'}</td>
@@ -173,7 +173,7 @@ const Products = () => {
                                             <Edit size={18} />
                                         </button>
                                         <button
-                                            onClick={() => handleDelete(product._id)}
+                                            onClick={() => handleDelete(product.id)}
                                             className="text-red-600 hover:text-red-800"
                                         >
                                             <Trash2 size={18} />
@@ -212,12 +212,12 @@ const Products = () => {
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
                                 <select
                                     className="w-full p-2 border rounded-lg"
-                                    value={formData.category}
-                                    onChange={e => setFormData({ ...formData, category: e.target.value })}
+                                    value={formData.categoryId}
+                                    onChange={e => setFormData({ ...formData, categoryId: e.target.value })}
                                 >
                                     <option value="">Select Category</option>
                                     {categories.map(c => (
-                                        <option key={c._id} value={c._id}>{c.name}</option>
+                                        <option key={c.id} value={c.id}>{c.name}</option>
                                     ))}
                                 </select>
                             </div>
@@ -226,12 +226,12 @@ const Products = () => {
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Supplier</label>
                                 <select
                                     className="w-full p-2 border rounded-lg"
-                                    value={formData.supplier}
-                                    onChange={e => setFormData({ ...formData, supplier: e.target.value })}
+                                    value={formData.supplierId}
+                                    onChange={e => setFormData({ ...formData, supplierId: e.target.value })}
                                 >
                                     <option value="">Select Supplier</option>
                                     {suppliers.map(s => (
-                                        <option key={s._id} value={s._id}>{s.name}</option>
+                                        <option key={s.id} value={s.id}>{s.name}</option>
                                     ))}
                                 </select>
                             </div>

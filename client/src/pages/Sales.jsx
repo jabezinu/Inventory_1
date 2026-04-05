@@ -13,10 +13,10 @@ const Sales = () => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [formData, setFormData] = useState({
-        product: '',
+        productId: '',
         quantity: 1,
         sellingPrice: 0,
-        customer: '',
+        customerId: '',
         paid: true
     });
 
@@ -44,10 +44,10 @@ const Sales = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // Remove customer field if it's empty
+            // Remove customerId field if it's empty
             const saleData = { ...formData };
-            if (!saleData.customer) {
-                delete saleData.customer;
+            if (!saleData.customerId) {
+                delete saleData.customerId;
             }
             await createSale(saleData);
             setIsModalOpen(false);
@@ -61,10 +61,10 @@ const Sales = () => {
 
     const resetForm = () => {
         setFormData({
-            product: '',
+            productId: '',
             quantity: 1,
             sellingPrice: 0,
-            customer: '',
+            customerId: '',
             paid: true
         });
     };
@@ -116,14 +116,14 @@ const Sales = () => {
                         </thead>
                         <tbody>
                             {filteredSales.map(sale => (
-                                <tr key={sale._id} className="border-b hover:bg-gray-50">
+                                <tr key={sale.id} className="border-b hover:bg-gray-50">
                                     <td className="p-4">{new Date(sale.date).toLocaleDateString()}</td>
                                     <td className="p-4">{sale.product?.name || 'Unknown Product'}</td>
                                     <td className="p-4">{sale.customer?.name || 'Walk-in Customer'}</td>
                                     <td className="p-4">{sale.quantity}</td>
                                     <td className="p-4">${sale.sellingPrice}</td>
                                     <td className="p-4 font-medium">${(sale.sellingPrice * sale.quantity).toFixed(2)}</td>
-                                    <td className="p-4 text-green-600">${sale.profit?.toFixed(2)}</td>
+                                    <td className="p-4 text-green-600">${sale.profit ? Number(sale.profit).toFixed(2) : '0.00'}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -141,13 +141,13 @@ const Sales = () => {
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Product</label>
                                 <select
                                     className="w-full p-2 border rounded-lg"
-                                    value={formData.product}
-                                    onChange={e => setFormData({ ...formData, product: e.target.value })}
+                                    value={formData.productId}
+                                    onChange={e => setFormData({ ...formData, productId: e.target.value })}
                                     required
                                 >
                                     <option value="">Select Product</option>
                                     {products.map(p => (
-                                        <option key={p._id} value={p._id}>
+                                        <option key={p.id} value={p.id}>
                                             {p.name} (Stock: {p.stockQuantity})
                                         </option>
                                     ))}
@@ -158,12 +158,12 @@ const Sales = () => {
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Customer</label>
                                 <select
                                     className="w-full p-2 border rounded-lg"
-                                    value={formData.customer}
-                                    onChange={e => setFormData({ ...formData, customer: e.target.value })}
+                                    value={formData.customerId}
+                                    onChange={e => setFormData({ ...formData, customerId: e.target.value })}
                                 >
                                     <option value="">Select Customer (Optional)</option>
                                     {customers.map(c => (
-                                        <option key={c._id} value={c._id}>{c.name}</option>
+                                        <option key={c.id} value={c.id}>{c.name}</option>
                                     ))}
                                 </select>
                             </div>
