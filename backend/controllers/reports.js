@@ -9,21 +9,21 @@ exports.getSalesReport = async (req, res) => {
   try {
     const { period } = req.query; // daily, weekly, monthly
     let dateFormat;
-    if (period === 'daily') dateFormat = '%Y-%m-%d';
-    else if (period === 'weekly') dateFormat = '%Y-%W';
-    else if (period === 'monthly') dateFormat = '%Y-%m';
-    else dateFormat = '%Y-%m-%d';
+    if (period === 'daily') dateFormat = 'YYYY-MM-DD';
+    else if (period === 'weekly') dateFormat = 'IYYY-IW';
+    else if (period === 'monthly') dateFormat = 'YYYY-MM';
+    else dateFormat = 'YYYY-MM-DD';
 
     const report = await Sale.findAll({
       attributes: [
-        [fn('DATE_FORMAT', col('date'), dateFormat), 'period'],
+        [fn('TO_CHAR', col('date'), dateFormat), 'period'],
         [fn('SUM', col('quantity')), 'totalQuantity'],
-        [fn('SUM', literal('selling_price * quantity')), 'totalRevenue'],
+        [fn('SUM', literal('"sellingPrice" * quantity')), 'totalRevenue'],
         [fn('SUM', col('profit')), 'totalProfit'],
         [fn('COUNT', col('id')), 'count']
       ],
-      group: [fn('DATE_FORMAT', col('date'), dateFormat)],
-      order: [[fn('DATE_FORMAT', col('date'), dateFormat), 'ASC']],
+      group: [fn('TO_CHAR', col('date'), dateFormat)],
+      order: [[fn('TO_CHAR', col('date'), dateFormat), 'ASC']],
       raw: true
     });
     res.json(report);
@@ -36,18 +36,18 @@ exports.getProfitReport = async (req, res) => {
   try {
     const { period } = req.query;
     let dateFormat;
-    if (period === 'daily') dateFormat = '%Y-%m-%d';
-    else if (period === 'weekly') dateFormat = '%Y-%W';
-    else if (period === 'monthly') dateFormat = '%Y-%m';
-    else dateFormat = '%Y-%m-%d';
+    if (period === 'daily') dateFormat = 'YYYY-MM-DD';
+    else if (period === 'weekly') dateFormat = 'IYYY-IW';
+    else if (period === 'monthly') dateFormat = 'YYYY-MM';
+    else dateFormat = 'YYYY-MM-DD';
 
     const report = await Sale.findAll({
       attributes: [
-        [fn('DATE_FORMAT', col('date'), dateFormat), 'period'],
+        [fn('TO_CHAR', col('date'), dateFormat), 'period'],
         [fn('SUM', col('profit')), 'totalProfit']
       ],
-      group: [fn('DATE_FORMAT', col('date'), dateFormat)],
-      order: [[fn('DATE_FORMAT', col('date'), dateFormat), 'ASC']],
+      group: [fn('TO_CHAR', col('date'), dateFormat)],
+      order: [[fn('TO_CHAR', col('date'), dateFormat), 'ASC']],
       raw: true
     });
     res.json(report);

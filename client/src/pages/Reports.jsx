@@ -37,7 +37,7 @@ const Reports = () => {
 
             // Transform data for charts
             setSalesData(sales.map(s => ({
-                date: s._id,
+                date: s.period,
                 revenue: s.totalRevenue,
                 quantity: s.totalQuantity,
                 profit: s.totalProfit
@@ -46,7 +46,7 @@ const Reports = () => {
             setStockData(stock);
 
             setProfitData(profit.map(p => ({
-                date: p._id,
+                date: p.period,
                 profit: p.totalProfit
             })));
 

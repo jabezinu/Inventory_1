@@ -68,6 +68,7 @@ const Products = () => {
             fetchData();
         } catch (error) {
             console.error("Error saving product:", error);
+            alert("Error saving product: " + (error.response?.data?.error || error.message));
         }
     };
 
@@ -213,7 +214,7 @@ const Products = () => {
                                 <select
                                     className="w-full p-2 border rounded-lg"
                                     value={formData.categoryId}
-                                    onChange={e => setFormData({ ...formData, categoryId: e.target.value })}
+                                    onChange={e => setFormData({ ...formData, categoryId: e.target.value ? Number(e.target.value) : '' })}
                                 >
                                     <option value="">Select Category</option>
                                     {categories.map(c => (
@@ -227,7 +228,7 @@ const Products = () => {
                                 <select
                                     className="w-full p-2 border rounded-lg"
                                     value={formData.supplierId}
-                                    onChange={e => setFormData({ ...formData, supplierId: e.target.value })}
+                                    onChange={e => setFormData({ ...formData, supplierId: e.target.value ? Number(e.target.value) : '' })}
                                 >
                                     <option value="">Select Supplier</option>
                                     {suppliers.map(s => (

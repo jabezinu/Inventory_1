@@ -57,7 +57,7 @@ const Dashboard = () => {
 
                 // Format sales data for chart
                 setSalesData(salesReport.map(item => ({
-                    date: item._id,
+                    date: item.period,
                     revenue: item.totalRevenue,
                     profit: item.totalProfit
                 })));
