@@ -79,6 +79,7 @@ const Products = () => {
                 fetchData();
             } catch (error) {
                 console.error("Error deleting product:", error);
+                alert("Error deleting product: " + (error.response?.data?.error || error.message));
             }
         }
     };
