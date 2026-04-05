@@ -119,8 +119,8 @@ const Reports = () => {
                                             <tr key={idx} className="border-b">
                                                 <td className="p-3">{day.date}</td>
                                                 <td className="p-3">{day.quantity}</td>
-                                                <td className="p-3">${day.revenue.toFixed(2)}</td>
-                                                <td className="p-3">${day.profit.toFixed(2)}</td>
+                                                <td className="p-3">ETB {day.revenue.toFixed(2)}</td>
+                                                <td className="p-3">ETB {day.profit.toFixed(2)}</td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -153,7 +153,7 @@ const Reports = () => {
                                         <XAxis type="number" />
                                         <YAxis dataKey="name" type="category" width={100} />
                                         <Tooltip />
-                                        <Bar dataKey="value" fill="#8884d8" name="Stock Value ($)" />
+                                        <Bar dataKey="value" fill="#8884d8" name="Stock Value (ETB)" />
                                     </BarChart>
                                 </ResponsiveContainer>
                             </div>

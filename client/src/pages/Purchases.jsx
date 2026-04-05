@@ -113,8 +113,8 @@ const Purchases = () => {
                                     <td className="p-4">{purchase.product?.name || 'Unknown Product'}</td>
                                     <td className="p-4">{purchase.supplier?.name || 'Unknown Supplier'}</td>
                                     <td className="p-4">{purchase.quantity}</td>
-                                    <td className="p-4">${purchase.costPrice}</td>
-                                    <td className="p-4 font-medium">${(purchase.costPrice * purchase.quantity).toFixed(2)}</td>
+                                    <td className="p-4">ETB {purchase.costPrice}</td>
+                                    <td className="p-4 font-medium">ETB {(purchase.costPrice * purchase.quantity).toFixed(2)}</td>
                                 </tr>
                             ))}
                         </tbody>

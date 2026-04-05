@@ -121,9 +121,9 @@ const Sales = () => {
                                     <td className="p-4">{sale.product?.name || 'Unknown Product'}</td>
                                     <td className="p-4">{sale.customer?.name || 'Walk-in Customer'}</td>
                                     <td className="p-4">{sale.quantity}</td>
-                                    <td className="p-4">${sale.sellingPrice}</td>
-                                    <td className="p-4 font-medium">${(sale.sellingPrice * sale.quantity).toFixed(2)}</td>
-                                    <td className="p-4 text-green-600">${sale.profit ? Number(sale.profit).toFixed(2) : '0.00'}</td>
+                                    <td className="p-4">ETB {sale.sellingPrice}</td>
+                                    <td className="p-4 font-medium">ETB {(sale.sellingPrice * sale.quantity).toFixed(2)}</td>
+                                    <td className="p-4 text-green-600">ETB {sale.profit ? Number(sale.profit).toFixed(2) : '0.00'}</td>
                                 </tr>
                             ))}
                         </tbody>

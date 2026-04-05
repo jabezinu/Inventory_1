@@ -166,7 +166,7 @@ const Products = () => {
                                             {product.stockQuantity}
                                         </span>
                                     </td>
-                                    <td className="p-4">${product.averageCost}</td>
+                                    <td className="p-4">ETB {product.averageCost}</td>
                                     <td className="p-4 flex gap-2">
                                         <button
                                             onClick={() => openEditModal(product)}

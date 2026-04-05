@@ -84,13 +84,13 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <StatsCard
                     title="Total Revenue"
-                    value={`$${stats.totalRevenue.toLocaleString()}`}
+                    value={`ETB ${stats.totalRevenue.toLocaleString()}`}
                     icon={DollarSign}
                     color="bg-green-500"
                 />
                 <StatsCard
                     title="Total Profit"
-                    value={`$${stats.totalProfit.toLocaleString()}`}
+                    value={`ETB ${stats.totalProfit.toLocaleString()}`}
                     icon={TrendingUp}
                     color="bg-blue-500"
                 />
