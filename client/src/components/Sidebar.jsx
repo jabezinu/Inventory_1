@@ -8,8 +8,7 @@ import {
     Users,
     BarChart,
     Layers,
-    FileText,
-    ClipboardList
+    FileText
 } from 'lucide-react';
 
 const Sidebar = () => {
@@ -21,7 +20,6 @@ const Sidebar = () => {
         { path: '/categories', label: 'Categories', icon: Layers },
         { path: '/suppliers', label: 'Suppliers', icon: Users },
         { path: '/customers', label: 'Customers', icon: Users },
-        { path: '/adjustments', label: 'Adjustments', icon: ClipboardList },
         { path: '/reports', label: 'Reports', icon: BarChart },
     ];
 

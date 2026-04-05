@@ -8,7 +8,6 @@ import Purchases from './pages/Purchases';
 import Categories from './pages/Categories';
 import Suppliers from './pages/Suppliers';
 import Customers from './pages/Customers';
-import Adjustments from './pages/Adjustments';
 import Reports from './pages/Reports';
 
 function App() {
@@ -23,7 +22,6 @@ function App() {
           <Route path="categories" element={<Categories />} />
           <Route path="suppliers" element={<Suppliers />} />
           <Route path="customers" element={<Customers />} />
-          <Route path="adjustments" element={<Adjustments />} />
           <Route path="reports" element={<Reports />} />
         </Route>
       </Routes>
